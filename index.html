@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brain</title>
+
+    <link href="static/style.css" rel="stylesheet" />
+    <link rel="manifest" href="static/manifest.json" />
+    <script src="static/index.js"></script>
+  </head>
+  <body>
+    <h1>Capture a thought</h1>
+    <form method="POST">
+      <label>Title: <input type="text" name="title" /> </label>
+      <p></p>
+      <label>
+        Description:
+        <br />
+        <textarea rows="6" cols="40" name="description"></textarea>
+      </label>
+      <p></p>
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>

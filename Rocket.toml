@@ -1,0 +1,8 @@
+[debug]
+address = "0.0.0.0"
+
+[default.oauth.github]
+redirect_uri = "http://localhost:8000/auth/github"
+
+[release.oauth.github]
+redirect_uri = "https://brain.347online.me/auth/github"
