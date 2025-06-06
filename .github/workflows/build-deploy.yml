@@ -1,0 +1,48 @@
+name: Build & Deploy
+on:
+  push:
+    branches: ["main", "dev"]
+  pull_request:
+    branches: ["main"]
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Build
+        run: |
+          echo "${{secrets.DOTENV}}" > .env
+          chmod 600 ./.env
+          cargo build --release --verbose
+      - name: Run tests
+        run: cargo test --release --verbose
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            static
+            target/release/second-brain
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+      - name: Deploy
+        run: |
+          mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
+          ssh-keyscan ${{secrets.SSH_HOST}} >> ~/.ssh/known_hosts
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > deploy_key
+          chmod 600 ./deploy_key
+          ls -R artifact
+          rsync -av --delete -e 'ssh -i ./deploy_key' ./artifact/ "${{secrets.SSH_USER}}@${{secrets.SSH_HOST}}:/home/github-actions/second-brain"
