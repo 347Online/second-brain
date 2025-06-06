@@ -48,9 +48,11 @@ pub(crate) fn capture(auth: Owner, input: Form<Thought>) -> Result<Redirect, Sta
 }
 
 fn save_thought(thought: Thought) -> Result<(), Box<dyn Error>> {
-    let fname = format!("notes/{}.md", thought.title());
+    let (title, description) = thought.dissolve();
+
+    let fname = format!("notes/{}.md", title);
     let mut file = File::create_new(fname)?;
-    file.write(thought.description().as_bytes())?;
+    file.write(description.as_bytes())?;
 
     Ok(())
 }
