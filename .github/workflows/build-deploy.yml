@@ -21,5 +21,7 @@ jobs:
           ssh-keyscan ${{secrets.SSH_HOST}} >> ~/.ssh/known_hosts
           echo "${{secrets.SSH_PRIVATE_KEY}}" > deploy_key
           chmod 600 ./deploy_key
+          echo "${{secrets.DOTENV}}" > .env
+          chmod 600 ./.env
           scp target/release/second-brain "${{secrets.SSH_USER}}@{{secrets.SSH_HOST}}:/${{secrets.DEST_PATH}}/"
           rsync -av --delete -e 'ssh -i ./deploy_key' static/ "${{secrets.SSH_USER}}@${{secrets.SSH_HOST}}:/${{secrets.DEST_PATH}}/static
