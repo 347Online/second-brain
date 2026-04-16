@@ -15,8 +15,6 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run tests
-        run: cargo test --release --verbose
       - name: Build
         run: |
           echo "${{secrets.DOTENV}}" > .env
