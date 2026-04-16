@@ -52,11 +52,7 @@
           };
 
           devShells.default = pkgs.mkShell {
-            buildInputs = with pkgs; [
-              rust-toolchain
-              rust-analyzer
-              pkg-config
-            ];
+            inherit (second-brain) buildInputs;
           };
 
           formatter = pkgs.nixfmt-tree;

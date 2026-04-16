@@ -1,4 +1,9 @@
-{ lib, rustPlatform }:
+{
+  lib,
+  rustPlatform,
+  pkg-config,
+  openssl,
+}:
 let
   manifest = (lib.importTOML ./Cargo.toml).package;
 in
@@ -8,6 +13,11 @@ rustPlatform.buildRustPackage {
 
   cargoLock.lockFile = ./Cargo.lock;
   src = lib.cleanSource ./.;
+
+  buildInputs = [
+    pkg-config
+    openssl
+  ];
 
   postInstall = ''
     mkdir -p $out/static
