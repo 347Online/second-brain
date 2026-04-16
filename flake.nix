@@ -55,6 +55,7 @@
             buildInputs = with pkgs; [
               rust-toolchain
               rust-analyzer
+              pkg-config
             ];
           };
 
